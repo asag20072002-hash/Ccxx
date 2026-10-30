@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#020504">
+<title>DOUSHA CYBER LAB</title>
+<style>
+:root{--green:#00ff73;--dim:#164b30;--yellow:#ffcc00;--red:#ff4058}
+*{box-sizing:border-box}
+body{margin:0;background:#020504;color:var(--green);font-family:Tahoma,Arial,monospace;padding:14px;min-height:100vh}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,transparent 0 3px,rgba(0,255,115,.035) 4px);z-index:2}
+.wrap{max-width:850px;margin:auto}
+header,.panel{border:0;background:transparent;box-shadow:none;padding:10px 4px;margin-bottom:10px}
+header{text-align:center}
+h1{font-size:clamp(22px,6vw,34px);margin:0 0 10px;text-shadow:0 0 12px var(--green);letter-spacing:1px}
+.sub{font-size:12px;letter-spacing:1px;direction:ltr}
+.badge{display:inline-block;color:var(--yellow);padding:6px 9px;font-size:11px;margin-top:12px;text-shadow:0 0 8px #ffcc0060}
+.row{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:13px;direction:ltr}
+#status{font-size:16px;text-align:center;margin:4px 0 12px;min-height:24px}
+.bar{height:5px;background:#123020;margin:12px 0;border-radius:10px;overflow:hidden}
+#fill{height:100%;width:0;background:var(--green);box-shadow:0 0 10px var(--green);transition:width .1s}
+#terminal{height:58vh;min-height:320px;overflow:hidden;background:transparent;border:0;padding:8px 2px;font-size:clamp(15px,3.7vw,19px);line-height:1.9;overflow-wrap:anywhere;text-align:left;text-shadow:0 0 8px #00ff7350;font-weight:600}
+.line{margin:3px 0;animation:appear .15s ease-out}
+@keyframes appear{from{opacity:0;transform:translateX(5px)}to{opacity:1;transform:translateX(0)}}
+.green{color:var(--green)}.yellow{color:var(--yellow)}.red{color:var(--red)}
+#notice{text-align:center;font-size:11px;color:var(--yellow);line-height:1.7;margin:14px 0}
+footer{text-align:center;color:#5b8d70;font-size:10px;padding:10px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>⚡ DOUSHA CYBER LAB ⚡</h1>
+  <div class="sub">DOUSHA CYBER LAB · AUTO SIMULATION</div>
+  <div class="badge">VISUAL DEMO • NO REAL DATA ACCESS</div>
+</header>
+<section class="panel">
+  <div class="row"><span>Operator: DOUSHA HACKER</span><span id="clock">00:00</span></div>
+  <div class="row" style="margin-top:10px"><span>Code lines</span><span id="counter">0 / 100</span></div>
+  <div class="bar"><div id="fill"></div></div>
+  <div id="status">Initializing automated sequence...</div>
+  <div id="terminal" aria-live="polite"></div>
+  <div id="notice">DEMO ENVIRONMENT • No real phone data is accessed.</div>
+</section>
+<footer>DOUSHA CYBER LAB · SIMULATION DISPLAY</footer>
+</div>
+<script>
+const terminal=document.getElementById("terminal");
+const statusEl=document.getElementById("status");
+const fill=document.getElementById("fill");
+const counter=document.getElementById("counter");
+const clock=document.getElementById("clock");
+const notice=document.getElementById("notice");
+
+const codeSamples=[
+"import os, sys, time",
+"from pathlib import Path",
+"def scan_demo_files(root):",
+"    results = []",
+"    for item in Path(root).iterdir():",
+"        results.append(item.name)",
+"    return results",
+"class SystemMonitor:",
+"    def __init__(self, status=True):",
+"        self.status = status",
+"    def run(self):",
+"        return {\"mode\": \"demo\", \"ok\": True}",
+"config = {\"threads\": 8, \"verbose\": True}",
+"for step in range(1, 101):",
+"    progress = step / 100 * 100",
+"    print(f\"[DEMO] {progress:05.1f}%\")",
+"def validate_sample(data):",
+"    return isinstance(data, dict)",
+"sample = {\"files\": [], \"records\": 0}",
+"assert validate_sample(sample)",
+"print(\"Diagnostic sequence ready\")"
+];
+
+function addLine(text, cls="green"){
+  const d=document.createElement("div");
+  d.className="line "+cls;
+  d.textContent=text;
+  terminal.appendChild(d);
+  while(terminal.children.length>65) terminal.removeChild(terminal.firstChild);
+  terminal.scrollTop=terminal.scrollHeight;
+}
+function typeLine(text, cls, done){
+  const d=document.createElement("div");
+  d.className="line "+cls;
+  terminal.appendChild(d);
+  let i=0;
+  const t=setInterval(()=>{
+    d.textContent=text.slice(0,i+1);
+    i++;
+    terminal.scrollTop=terminal.scrollHeight;
+    while(terminal.children.length>65) terminal.removeChild(terminal.firstChild);
+    if(i>=text.length){clearInterval(t); if(done)done();}
+  },1);
+}
+function pad(n){return String(n).padStart(2,"0");}
+
+let lineNo=0;
+let seconds=0;
+typeLine("Session initialized by DOUSHA HACKER","yellow",()=>typeLine("Automated sequence started...","green",()=>typeLine("NOTICE: Displayed output is a visual effect.","yellow")));
+
+const clockTimer=setInterval(()=>{
+  seconds++;
+  clock.textContent=pad(Math.floor(seconds/60))+":"+pad(seconds%60);
+},1000);
+
+let sequenceStarted = false;
+function startSequence(){
+  if(sequenceStarted) return;
+  sequenceStarted = true;
+  function writeNextLine(){
+    if(lineNo >= 100){
+      statusEl.textContent="100 lines processed — preparing report...";
+      typeLine("====================================","green",()=>{
+        const finalMessages=[
+          "تم سحب مكالمات",
+          "تم سحب ملفات",
+          "تم سحب صور",
+          "تم تهكير الهاتف بنجاح 💻💯"
+        ];
+        let idx=0;
+        function next(){
+          if(idx>=finalMessages.length){
+            statusEl.textContent="VISUAL SEQUENCE COMPLETE";
+            notice.textContent="VISUAL EFFECTS ONLY";
+            clearInterval(clockTimer);
+            return;
+          }
+          typeLine(finalMessages[idx],idx===3?"red":"yellow",()=>{
+            idx++;
+            setTimeout(next,100);
+          });
+        }
+        next();
+      });
+      return;
+    }
+    lineNo++;
+    const sample=codeSamples[(lineNo-1)%codeSamples.length];
+    counter.textContent=lineNo+" / 100";
+    fill.style.width=lineNo+"%";
+    statusEl.textContent="Processing code lines...";
+    typeLine("["+pad(lineNo)+"/100] "+sample,"green",()=>setTimeout(writeNextLine,8));
+  }
+  writeNextLine();
+}
+setTimeout(startSequence, 900);
+
+</script>
+</body>
+</html>
